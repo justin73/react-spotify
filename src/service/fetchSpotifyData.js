@@ -1,5 +1,13 @@
-export const fetchAlbums = (accessToken) => {
+export const fetchAlbums = (accessToken,id) => {
+  const baseUrl = `https://api.spotify.com/v1/artists/${id}/albums?`
 
+  const request = new Request(baseUrl, {
+    headers: new Headers({
+      'Authorization': 'Bearer ' + accessToken
+    })
+  })
+
+ return fetch(request).then(res=>res.json())
 };
 
 export const fetchNewReleases = (accsssToken) => {}
