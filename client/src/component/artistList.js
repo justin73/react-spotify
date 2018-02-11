@@ -3,10 +3,10 @@ import React from 'react'
 import { ArtistItem } from './artistItem';
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
+import './albumList.css'
 class ArtistList extends Component {
 	constructor(props) {
 		super(props);
-		this.getArtistAlbumList = this.getArtistAlbumList.bind(this)
 		this.state= {
       artists:[],
       albums:[]
@@ -14,9 +14,6 @@ class ArtistList extends Component {
 	}
 
 	render() {
-		console.log('====================================')
-		console.log(this.props.artists)
-		console.log('====================================')
 		return (
 			<div className="artistContainer">
 				<ul>
@@ -31,19 +28,6 @@ class ArtistList extends Component {
 			</div>
 		)
 	}
-
-	getArtistAlbumList(evt) {
-		console.log('====================================');
-		console.log('call getArtistAlbumList');
-		console.log('====================================');
-    // fetchAlbums(this.props.token, evt.target.id).then(albumlist=>{
-    //   this.setState({
-    //     albums:albumlist.items
-    //   })
-    // }
-    // )
-  }
-
 }
 
 

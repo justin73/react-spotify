@@ -1,6 +1,7 @@
 import React from 'react'
 import { Component } from 'react';
 import { fetchAlbumTracks } from '../service/fetchSpotifyData';
+import './albumItem.css'
 export default class AlbumItem extends Component {
   constructor(props){
     super(props)
@@ -11,7 +12,7 @@ export default class AlbumItem extends Component {
   }
   render(){
     let image
-    this.props.images.length ? image = <img alt={this.props.images[1].url} src={this.props.images[1].url}/> : image = <div>No Image Available</div>
+    this.props.images.length ? image = <img id={this.props.id} alt={this.props.images[1].url} src={this.props.images[1].url}/> : image = <div id={this.props.id}>No Image Available</div>
     let list = null;
     if (this.state.trackList.length) {
       list = (
@@ -26,10 +27,10 @@ export default class AlbumItem extends Component {
       )
     }
     return (
-      <li>
+      <li className="albumItem" id={this.props.id}>
         <div id={this.props.id} onClick={this.getAlbumTracks}>
           {image}
-          <p>{this.props.name}</p>
+          <p id={this.props.id}>{this.props.name}</p>
         </div>
         {list}
       </li>

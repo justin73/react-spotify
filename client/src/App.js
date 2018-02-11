@@ -7,7 +7,7 @@ import NewSongs from './routes/NewSongs';
 import ArtistList from './component/artistList'
 import AlbumList from './component/albumList'
 import { fetchArtists, fetchAlbums, fetchAlbumTracks } from './service/fetchSpotifyData';
-
+import { Button } from 'react-bootstrap';
 const Home = () => {
   return (
     <div>
@@ -20,11 +20,11 @@ const Links = () => {
   return (
     <div>
       <div>
-        <Link to="/search"><button>Search by Artist</button></Link>
+        <Link to="/search"><Button bsStyle="danger">Search by Artist</Button></Link>
       </div>
 
       <div>
-        <Link to="/newSongs"><button>Checkout New Release</button></Link>
+        <Link to="/newSongs"><Button bsStyle="danger">Checkout New Release</Button></Link>
       </div>
     </div>
   )
@@ -112,10 +112,16 @@ class App extends Component {
     })
   }
   getArtistAlbumList(evt) {
+    console.log('====================================')
+    console.log(evt.target)
+    console.log('====================================')
     fetchAlbums(this.state.token, evt.target.id).then(albumlist=>{
       this.setState({
         albums:albumlist.items
       })
+      console.log('====================================')
+      console.log(albumlist.items)
+      console.log('====================================')
     }
     )
   }
