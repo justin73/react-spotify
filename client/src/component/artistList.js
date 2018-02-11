@@ -9,14 +9,15 @@ class ArtistList extends Component {
 		super(props);
 		this.getArtistAlbumList = this.getArtistAlbumList.bind(this)
 		this.state= {
-      token: '',
-      searchTerm: '',
       artists:[],
       albums:[]
     };
 	}
 
 	render() {
+		console.log('====================================')
+		console.log(this.props.artists)
+		console.log('====================================')
 		return (
 			<div className="artistContainer">
 				<ul>
