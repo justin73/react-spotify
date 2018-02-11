@@ -2,7 +2,6 @@
 
 import React from 'react'
 import AlbumItem from './albumItem';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import { Component } from 'react';
 export default class AlbumList extends Component {
 	constructor(props){

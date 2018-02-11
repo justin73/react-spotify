@@ -2,7 +2,6 @@
 import React from 'react'
 import { ArtistItem } from './artistItem';
 import { Component } from 'react';
-import { fetchAlbums, fetchAlbumTracks } from '../service/fetchSpotifyData';
 import { Link } from 'react-router-dom';
 class ArtistList extends Component {
 	constructor(props) {

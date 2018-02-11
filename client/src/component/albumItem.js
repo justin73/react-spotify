@@ -1,6 +1,6 @@
 import React from 'react'
 import { Component } from 'react';
-import { fetchArtists, fetchAlbums, fetchAlbumTracks } from '../service/fetchSpotifyData';
+import { fetchAlbumTracks } from '../service/fetchSpotifyData';
 export default class AlbumItem extends Component {
   constructor(props){
     super(props)
