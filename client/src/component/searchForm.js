@@ -1,19 +1,28 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
-export const SearchForm = (props) => (
-  <form>
-    <input type="text" 
-      value={props.searchTerm} 
-      onChange={props.handleInputChange}/>
-    <Link to={`/search/${props.searchTerm}`}>
-      <Button onClick={props.callSpotifyAPI}>Search By Artist</Button>
-    </Link>
-    
-  </form>
-)
+import './searchForm.css';
+import TextField from 'material-ui/TextField';
+import { Button } from 'reactstrap';
 
-SearchForm.propTypes = {
-  searchTerm: PropTypes.string.isRequired
+export const SearchForm = (props) => {
+    const handleKeyPress = (evt) => {
+      if (evt.key === 'Enter' & evt.target.value.trim().length>0) {
+        evt.preventDefault();
+        props.searchArtist()
+      }
+    }
+    return (
+      <form className="searchForm">
+        <TextField type="text" 
+          label="Search By Artist"
+          value={props.searchTerm} 
+          onChange={props.handleInputChange}
+          margin="normal"
+          onKeyPress={handleKeyPress}
+        />
+        <Link to={`/search/${props.searchTerm}`}>
+          <Button variant="raised" color="secondary" disabled={props.disableBtn}  onClick={props.searchArtist}>Search By Artist</Button>
+        </Link>
+      </form>
+    )
 }

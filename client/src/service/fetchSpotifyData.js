@@ -1,56 +1,55 @@
-export const fetchAlbums = (accessToken,id) => {
-  const baseUrl = `https://api.spotify.com/v1/artists/${id}/albums`
+const BASE_URL = 'https://api.spotify.com/v1/';
+let ENDPOINT_PATH = '';
+let PARAMS={};
+let QUERY='';
+const esc = encodeURIComponent;
 
-  const request = new Request(baseUrl, {
-    headers: new Headers({
-      'Authorization': 'Bearer ' + accessToken
-    })
-  })
-
- return fetch(request).then(res=>res.json())
-};
-
-export const fetchAlbumTracks = (accessToken,id) => {
-  const baseUrl = `https://api.spotify.com/v1/albums/${id}/tracks`
-
-  const request = new Request(baseUrl, {
-    headers: new Headers({
-      'Authorization': 'Bearer ' + accessToken
-    })
-  })
-
- return fetch(request).then(res=>res.json())
-};
-
-// export const fetchNewReleases = (accsssToken) => {
-//   const baseUrl = `https://api.spotify.com/v1/browse/new-releases`
-//   const request = new Request(baseUrl, {
-//     headers: new Headers({
-//       'Authorization': 'Bearer ' + accessToken
-//     })
-//   })
-//   return fetch(request).then(res=>res.json())
-// }
-
-export const fetchArtists = (accessToken, artist) => {
-  const baseUrl = 'https://api.spotify.com/v1/search?'
-  const params = {
-    'query': artist,
-    'offset': 0,
-    'type': 'artist',
-    'market': 'US'
-  }
+const parseParams = (params)=>{
+  return Object.keys(PARAMS)
+          .map(k => esc(k) + '=' + esc(PARAMS[k]))
+          .join('&')
+}
+export const fetchSpotifyData = (accessToken, id, searchTerm, urlType, country='') => {
   
-  const esc = encodeURIComponent;
-  let query = Object.keys(params)
-           .map(k => esc(k) + '=' + esc(params[k]))
-           .join('&')
-  const request = new Request(baseUrl+query, {
+  switch (urlType) {
+    case 'artists':
+      ENDPOINT_PATH = `artists/${id}/albums`
+      QUERY = ''
+      break;
+    case 'albums':
+      ENDPOINT_PATH = `albums?`
+      PARAMS = {
+        'ids': id,
+        'market': 'US'
+      }
+      QUERY = parseParams(PARAMS)
+      break;
+    case 'browse':
+      ENDPOINT_PATH = `browse/new-releases?`
+      PARAMS = {
+        'country': country,
+      }
+      QUERY = parseParams(PARAMS)
+      break;
+    default:
+      ENDPOINT_PATH = `search?`
+      PARAMS = {
+        'query': searchTerm,
+        'offset': 0,
+        'type': 'artist',
+        'market': 'US'
+      }
+      QUERY = parseParams(PARAMS)
+      break;
+  }
+
+  const requestUrl = BASE_URL+ENDPOINT_PATH;
+  const request = new Request(requestUrl + QUERY, {
     headers: new Headers({
       'Authorization': 'Bearer ' + accessToken
     })
   })
+  
+  return fetch(request).then(res=>res.json())
 
- return fetch(request).then(res=>res.json())
-};
-
+}

@@ -1,56 +1,39 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import { SearchForm } from './component';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Button, Tooltip } from 'reactstrap';
+import { fetchSpotifyData} from './service/fetchSpotifyData';
+import { Home } from './routes';
+import {SearchForm, ArtistList, AlbumList} from './component';
+import store from './store';
 import NewSongs from './routes/NewSongs';
-import ArtistList from './component/artistList'
-import AlbumList from './component/albumList'
-import { fetchArtists, fetchAlbums, fetchAlbumTracks } from './service/fetchSpotifyData';
-import { Button } from 'react-bootstrap';
-const Home = () => {
-  return (
-    <div>
-      <Links /> 
-    </div>
-  )
-}
-
-const Links = () => {
-  return (
-    <div>
-      <div>
-        <Link to="/search"><Button bsStyle="danger">Search by Artist</Button></Link>
-      </div>
-
-      <div>
-        <Link to="/newSongs"><Button bsStyle="danger">Checkout New Release</Button></Link>
-      </div>
-    </div>
-  )
-}
 
 class App extends Component {
-  constructor(){
-    super();
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.callSpotifyAPI = this.callSpotifyAPI.bind(this)
-    this.getArtistAlbumList = this.getArtistAlbumList.bind(this)
-    this.getAlbumTracks = this.getAlbumTracks.bind(this)
+  constructor(props){
+    super(props);
     const params = this.getHashParams();
     const token = params.access_token;
-    this.state={
+    store.dispatch({type:'FETCH_TOKEN', payload: token})
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.getNewAlbums = this.getNewAlbums.bind(this)
+    this.searchArtist = this.searchArtist.bind(this)
+    this.getArtistAlbumList = this.getArtistAlbumList.bind(this)
+    this.toggle = this.toggle.bind(this);
+    this.state = {
       token: token,
       loggedIn: token? true: false,
-      searchTerm:'',
-      artists:[],
-      albums:[]
+      loading: false,
+      searchTerm: '',
+      artists: [],
+      albums: [],
+      tooltipOpen: false,
+      disableBtn: true
     }
   }
   handleInputChange (evt) {
-    this.setState({
-      searchTerm: evt.target.value
-    })
+    this.setState({searchTerm: evt.target.value})
+    evt.target.value.trim().length ? this.setState({disableBtn:false}) :this.setState({disableBtn:true})
   }
   getHashParams() {
     var hashParams = {};
@@ -63,71 +46,104 @@ class App extends Component {
     }
     return hashParams;
   }
-
+  toggle() {
+    this.setState({ tooltipOpen: !this.state.tooltipOpen });
+  }
   render() {
     let content = null;
     if (this.state.token) {
       content = (
-        <div>
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Touchtunes Music Lib</h1>
-          </header>
-          <Router>
-            <div>            
-              <div>
-                <Route exact path="/" component={Home}/>
-                <Route exact path="/search" render={()=>
-                  <SearchForm handleInputChange={this.handleInputChange} searchTerm={this.state.searchTerm} callSpotifyAPI={this.callSpotifyAPI}/>
-                }/>
-                <Route exact path="/search/:name" render={()=>
-                  <ArtistList artists={this.state.artists} token={this.state.token} getArtistAlbumList={this.getArtistAlbumList}/>
-                }/>
-                <Route  exact path="/search/:name/albumList" render={()=>
-                  <AlbumList albums = {this.state.albums} token={this.state.token} getAlbumTracks={this.getAlbumTracks}/>
-                }/>    
-                <Route exact path="/newSongs" component={NewSongs}/>  
-              </div>
-            </div>
-          </Router>
-        </div>
+        <Router>
+          <div className="contentContainer">            
+            <Route exact path="/" component={Home}/>
+            <Route exact path="/search" render={()=>
+              <SearchForm handleInputChange={this.handleInputChange} 
+                searchTerm={this.state.searchTerm} 
+                searchArtist={this.searchArtist} 
+                disableBtn={this.state.disableBtn}
+                loading={this.state.loading}
+              />
+            }/>
+            <Route exact path="/search/:name" render={()=>
+              <ArtistList 
+                artists={this.state.artists} 
+                getArtistAlbumList={this.getArtistAlbumList}
+              />
+            }/>
+            <Route  exact path="/search/:name/albumList" render={()=>
+              <AlbumList albums={this.state.albums}/>
+            }/>    
+            <Route exact path="/newSongs" render={()=>
+              <NewSongs albums={this.state.albums} getNewAlbums={this.getNewAlbums}/>
+            }/>
+          </div>
+        </Router>
       )
     } else {
       content = (
-        <a href='http://localhost:8888'> Login to Spotify </a>
+        <div className="loginContainer">
+          <a href='http://localhost:8888' id="loginTooltip">
+            <Button variant="raised" color="primary" className="loginBtn">Login to Spotify</Button>
+          </a>
+          <Tooltip placement="right" isOpen={this.state.tooltipOpen} target="loginTooltip" toggle={this.toggle}>
+            This web app requires an active Spotify account, please log in first
+          </Tooltip>
+        </div>
       )
     }
     return (
       <div className="App">
-        {content}
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" />
+          <h1 className="App-title">TouchTunes - Spotify - React</h1>
+        </header>
+        <div className="App-body">
+          {content}
+        </div>
       </div>
     );
   }
 
-  callSpotifyAPI (){
-    fetchArtists(this.state.token, this.state.searchTerm).then((artistList)=>{
+  searchArtist () {
+    this.setState({
+      loading: true
+    })
+    fetchSpotifyData(store.getState().token, null, this.state.searchTerm, 'search').then((artistList) => {
       this.setState({
         artists:artistList.artists.items,
+        loading: false
       })
     })
   }
-  getArtistAlbumList(evt) {
-    console.log('====================================')
-    console.log(evt.target)
-    console.log('====================================')
-    fetchAlbums(this.state.token, evt.target.id).then(albumlist=>{
-      this.setState({
-        albums:albumlist.items
-      })
-      console.log('====================================')
-      console.log(albumlist.items)
-      console.log('====================================')
-    }
-    )
-  }
 
-  getAlbumTracks(evt) {
-    fetchAlbumTracks(this.state.token, evt.target.id).then((tracks)=>{
+  getArtistAlbumList(evt) {
+    fetchSpotifyData(store.getState().token, evt.target.id, null, 'artists').then(albumlist=>{
+      const ids = albumlist.items.map(album => album.id).join(',')
+      return ids
+    }).then((ids)=>{
+      // Ablums by aritst don't contain date and popularity and tracks, therefore by looping though all the artist's albums,
+      // I call another endpoint to get those missing information 
+      fetchSpotifyData(store.getState().token, ids, null, 'albums').then((res)=>{
+        this.setState({
+          albums:res.albums
+        })
+      })
+    })
+  }
+  
+  getNewAlbums(evt) {
+    console.log('====================================')
+    console.log('call me maybe ----> ',evt.target.innerText)
+    console.log('====================================')
+    fetchSpotifyData(store.getState().token, null, null, 'browse', evt.target.innerText).then((res) => {
+      const ids = res.albums.items.map(album => album.id).join(',')
+      return ids
+    }).then((ids)=>{
+      fetchSpotifyData(store.getState().token, ids, null, 'albums').then((res)=>{
+        this.setState({
+          albums:res.albums
+        })
+      })
     })
   }
 }

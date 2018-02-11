@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  height: 100vh;
 }
 
 .App-logo {
@@ -9,7 +10,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  height: 20vh;
   padding: 20px;
   color: white;
 }
@@ -21,7 +22,29 @@
 .App-intro {
   font-size: large;
 }
+.App-body {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  align-content: center;
+  background-color: #C8D6CA;
+}
 
+.loginContainer {
+  display: block;
+  margin: 0 auto;
+}
+.contentContainer{
+  width: 100vw;
+  height:100%;
+  background-color: #C8D6CA;
+}
+a{
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }

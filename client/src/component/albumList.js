@@ -1,25 +1,18 @@
 //Stateless component 
-
 import React from 'react'
 import AlbumItem from './albumItem';
-import { Component } from 'react';
-export default class AlbumList extends Component {
-	constructor(props){
-		super(props)
-	}	
-	render() {
-		console.log('====================================');
-		console.log('token in albumlist ---> ', this.props.token);
-		console.log('====================================');
-		return (
-			<div className="albumListContainer">
-				<ul>
-					{this.props.albums.map(album => 
-					
-						<AlbumItem key={album.id} {...album} token={this.props.token} getAlbumTracks={this.props.getAlbumTracks}/>
-					)}
-				</ul>
-			</div>
-		)
-	}
+import { Container, Row, Col } from 'reactstrap';
+
+export const AlbumList = (props) => {
+	return (
+		<Container className="artistContainer" >
+			<Row>
+				{props.albums.map(album => 
+					<Col key={album.id} sm="12" md="4">
+						<AlbumItem key={album.id} {...album} newRelease={props.newRelease} searchArtist={props.searchArtist} handleInputChange={props.handleInputChange}/>
+					</Col>
+				)}
+			</Row>
+		</Container>
+	)
 }

@@ -1,26 +1,12 @@
-li{
-  width: 49%;
-  display: inline-block;
-  text-align: center;
+/* .card{
+  flex-direction: row
 }
 
-.profileContainer {
-  display: flex;
-  align-items: center;
-  padding: 20px;
-}
-
-.profileImg{
-  display: inline-block;
-  width: 128px;
-  height: 128px;
-  border-radius: 50%;
-}
-
-.profileName{
+.card img {
   display: inline-block;
   width: 50%;
-  margin-left: 20px;
-  text-align: left;
-  text-decoration: none;
 }
+
+.card-body{
+  display: inline-block;
+} */

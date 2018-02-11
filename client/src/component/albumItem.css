@@ -1,10 +1,43 @@
-.albumItem{
-  vertical-align: top;
+.card-title {
+  font-size: 1rem;
+  font-weight: 100;
 }
 
-li{
-  width: 49%;
-  display: inline-block;
-  text-align: center;
-  vertical-align: top;
+.trackList{
+  text-align: left;
+  padding: 10px;
 }
+
+.trackList p {
+  font-size: .8rem;
+}
+
+.genres {
+  font-size: .9rem;
+  font-weight: 100;
+}
+.otherInfo {
+  margin: 10px 0px;
+}
+.otherInfo span {
+  display: inline-block;
+  font-size: .9rem;
+  font-weight: 100;
+}
+.pop{
+  float: left;
+}
+.releaseDate{
+  float: right;
+}
+.trackList {
+  margin-top: 40px;
+}
+.trackInfo {
+  display: block;
+  padding: 10px 0px;
+}
+
+.card-body {
+  padding: 0.75rem;
+} 
