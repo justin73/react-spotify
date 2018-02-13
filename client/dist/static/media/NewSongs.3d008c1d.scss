@@ -1,0 +1,31 @@
+@import '../style/variables';
+
+
+.newsongs-container {
+  margin: 30px 0px;
+
+  @import '../style/small-btn';
+  .btn-group {
+    margin-bottom: 20px;
+
+    .dropdown-toggle {
+      background-color: $secondary-color;
+    }
+  
+    .show > .btn-secondary.dropdown-toggle {
+      background-color: $secondary-color;
+      border-color: $secondary-color;
+    }
+  
+    .dropdown-menu {
+      border: none;
+      .dropdown-item {
+        color: $secondary-color;
+      }
+  
+      .dropdown-divider {
+        border-top: 1px solid $secondary-color;
+      }
+    }
+  }
+}
