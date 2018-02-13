@@ -4,24 +4,13 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import 'bootstrap/dist/css/bootstrap.css';
-import store from './store'
+import store from './store';
+import { Provider } from 'react-redux';
 
-const render = () => {
-  const state = store.getState()
-
-  ReactDOM.render(<App token={state.token}/>, document.getElementById('root'));
-  
-}
-
-render()
-
-store.subscribe(render)
-
-// setTimeout(() => {
-//   console.log('====================================');
-//   console.log('call reducer');
-//   console.log('====================================');
-//   store.dispatch({type:'FETCH_TOKEN', payload: 'fdasfs'})
-// }, 1000);
+ReactDOM.render((
+  <Provider store={store}>
+    <App/>
+  </Provider>
+), document.getElementById('root'));
 
 registerServiceWorker();

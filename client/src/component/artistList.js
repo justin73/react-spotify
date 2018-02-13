@@ -2,36 +2,42 @@
 import React from 'react'
 import { ArtistItem } from './artistItem';
 import { Link } from 'react-router-dom';
-import './artistList.css'
+import './artistList.scss';
 import { Container, Row, Col } from 'reactstrap';
+import store from '../store';
+import { fetchAlbums } from '../reducers/demoReducer';
 
+// TODO: change it to class based so that I could use lifecyle to remove previous list when component is updated
 export const  ArtistList = (props) => {
-	let availableList = null
-	if(props.artists.length) {
+	const getArtistAlbums = (evt) => {
+		store.dispatch(fetchAlbums(store.getState().token, evt.target.id, null, 'artists', null))
+	}
+	let availableList = null;
+	
+	if (store.getState().loading) {
 		availableList = (
-			<Row>
-				{
-					props.artists.map(artist =>
-						<Col key={artist.id} sm="12" md="6" id={artist.id}>
-							<Link to={`/search/${artist.name}/albumList`}> 
-								<ArtistItem id={artist.id} {...artist} getArtistAlbumList={props.getArtistAlbumList}/>
-							</Link>
-						</Col>
-					)
-				}
-			</Row>
+			<p className="status">Loading...</p>
 		)
 	} else {
-		if (props.loading) {
+		if(store.getState().artists.length) {
 			availableList = (
-				<p>Loading...</p>
+				<Row>
+					{
+						store.getState().artists.map(artist =>
+							<Col key={artist.id} xs="12" sm="12" md="6" lg="4" id={artist.id}>
+								<Link to={`/search/${artist.name}/albumList`}> 
+									<ArtistItem id={artist.id} {...artist} getArtistAlbumList={getArtistAlbums}/>
+								</Link>
+							</Col>
+						)
+					}
+				</Row>
 			)
 		} else {
 			availableList = (
-				<p>No Results Found!</p>
+				<p className="status">No Results Found!</p>
 			)
 		}
-
 	}
 
 	return (

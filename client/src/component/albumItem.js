@@ -1,23 +1,26 @@
-import React from 'react'
+import React from 'react';
 import { Component } from 'react';
-import './albumItem.css'
+import './albumItem.scss';
 import { Card, CardImg, CardText, CardBody,
   CardTitle, CardSubtitle, Collapse } from 'reactstrap';
 import StarRatingComponent from 'react-star-rating-component';
-
+import moment from 'moment';
+import momentDurationFormatSetup from 'moment-duration-format';
 export default class AlbumItem extends Component {
   constructor(props){
-    super(props)
-    this.toggle = this.toggle.bind(this)
+    super(props);
+    this.toggle = this.toggle.bind(this);
+    this.tooltipToggle = this.tooltipToggle.bind(this);
     this.state= {
-      fadeIn: false
-    }
+      fadeIn: false,
+      tooltipOpen: false,
+    };
   }
   render(){
-    const image = this.props.images.length ? this.props.images[1].url:null
-    const genres = this.props.genres.length ? this.props.genres.join(','): 'N/A'
-    const rating = this.props.popularity/20.00 
-    let artist = null
+    const image = this.props.images.length ? this.props.images[1].url:null;
+    const genres = this.props.genres.length ? this.props.genres.join(','): 'N/A';
+    const rating = this.props.popularity/20.00 ;
+    let artist = null;
     if (this.props.newRelease) {
       artist = (
         <div>
@@ -29,6 +32,8 @@ export default class AlbumItem extends Component {
         </div>
       )
     }
+    // const tempTime = moment.duration(this.props.tracks.items);
+
     return (
       <Card onClick={this.toggle} style={{marginTop:20}}>
         <CardImg top width="100%" src={image} alt={this.props.name} />
@@ -48,9 +53,14 @@ export default class AlbumItem extends Component {
               <CardText> 
                 {
                   this.props.tracks.items.map(item =>
-                    <span className="trackInfo" key={item.id}> 
-                      {item.track_number} {item.name}
-                    </span> 
+                    <div className="trackInfo" key={item.id}>
+                      <span className="trackName" id="trackInfoTooltip"> 
+                        {item.track_number} {item.name}
+                      </span> 
+                      <span className="trackDuration">
+                        {moment.duration(item.duration_ms).format('mm:ss')}
+                      </span>
+                    </div>
                 )}
               </CardText>
             </Collapse>
@@ -58,7 +68,9 @@ export default class AlbumItem extends Component {
       </Card>
     )
   }
-
+  tooltipToggle () {
+    this.setState({ tooltipOpen: !this.state.tooltipOpen });
+  }
   toggle() {
     this.setState({
       fadeIn: !this.state.fadeIn

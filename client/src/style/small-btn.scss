@@ -1,0 +1,11 @@
+@import 'variables';
+
+.btn-primary {
+  background-color:  $secondary-color;
+  border-color:  $secondary-color;
+  &:hover, &:disabled{
+    background-color:  $secondary-hover-color;
+    border-color:  $secondary-hover-color;
+  }
+  
+}
