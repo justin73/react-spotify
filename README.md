@@ -45,7 +45,7 @@ There are two parts in the project
 > > The main code base contains the components
 
 TODO:
-  - [ ] Add redux-presist
+  - [X] Add redux-presist
   - [ ] Add react-redux connect to stateless components
-  - [ ] Add proper error handling
+  - [ ] Add proper error handling, e.g. when refresh token when it expires
   - [ ] Improve UI, animation, etc
