@@ -33,7 +33,16 @@ There are two parts in the project
 5. Open your browser and try [http:localhost:3000](http:localhost:3000), then you will be able to see the app running
     
     
+#### Project Structure
 
+> Inside ./client, it contains the main code for this project. 
+
+> 1. ./config and ./public
+> > It contains all the webpack settting
+> 2. ./dist
+> > It contains all the compiled file after run `npm build`
+> 4. ./src
+> > The main code base contains the components
 
 TODO:
   - [ ] Add redux-presist
