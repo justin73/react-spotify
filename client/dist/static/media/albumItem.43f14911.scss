@@ -1,0 +1,66 @@
+@import '../style/variables';
+
+
+
+.card-body {
+  padding: 0.75rem;
+  color: $base-font-color;
+
+  .card-title {
+    font-size: 1rem;
+    font-weight: $slim;
+  }
+  
+  .card-subtitle {
+
+    .genres {
+      font-size: $card-subtitle;
+      font-weight: $slim;
+    }
+
+    .otherInfo {
+      margin: 10px 0px;
+      
+      .pop{
+        float: left;
+        .dv-star-rating-star {
+          i {
+            color: grey;
+          }
+        }
+        .dv-star-rating-full-star { 
+          i {
+            color: $primary-color;
+          }
+        }
+      }
+
+      span {
+        display: inline-block;
+        font-size: .9rem;
+        font-weight: $slim;
+      }
+
+      .releaseDate{
+        float: right;
+      }
+    }
+  }
+  
+  .trackList{
+    text-align: left;
+    margin-top: 40px;
+
+    p {
+      font-size: $card-text;
+    }
+  
+    .trackInfo, .trackName {
+      padding: 10px 0px;
+    }
+  
+    .trackDuration {
+      float: right;
+    }
+  }
+} 

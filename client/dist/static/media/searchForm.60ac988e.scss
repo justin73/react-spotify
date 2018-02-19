@@ -1,0 +1,24 @@
+@import '../style/variables';
+
+.searchForm{
+  padding: 20px;
+  width: 100%;
+
+  a{
+    margin-left: 20px;
+  }
+
+  @import '../style/small-btn';
+
+  label, div,  {
+    color: $secondary-color;  
+    
+  }
+  div {
+    color: $secondary-color;
+    &:before, &:after, &:hover:before {
+      background-color: $secondary-color;
+    }
+  }
+}
+
