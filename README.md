@@ -41,7 +41,7 @@ There are two parts in the project
 > > It contains all the webpack settting
 > 2. ./dist
 > > It contains all the compiled file after run `npm run build`
-> 4. ./src
+> 4. ./app
 > > The main code base contains the components
 
 TODO:
